@@ -6,6 +6,7 @@ import com.example.AttendanceTracker.Model.Course;
 import com.example.AttendanceTracker.repositry.TeacherRepo;
 import com.example.AttendanceTracker.repositry.TeacherCourseRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public class TeacherService {
     @Autowired
     private TeacherCourseRepo teacherCourseRepo;
 
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     public List<Teacher> getAllTeachers() {
         return teacherRepo.findAll();
     }
@@ -28,6 +31,8 @@ public class TeacherService {
     }
 
     public Teacher addTeacher(Teacher teacher) {
+        // Hash the password before saving
+        teacher.setTeacherPassword(passwordEncoder.encode(teacher.getTeacherPassword()));
         return teacherRepo.save(teacher);
     }
 
@@ -37,7 +42,8 @@ public class TeacherService {
             Teacher teacher = optionalTeacher.get();
             teacher.setTeacherName(teacherDetails.getTeacherName());
             teacher.setTeacherEmail(teacherDetails.getTeacherEmail());
-            teacher.setTeacherPassword(teacherDetails.getTeacherPassword());
+            // Hash the password before saving
+            teacher.setTeacherPassword(passwordEncoder.encode(teacherDetails.getTeacherPassword()));
             teacher.setCourses(teacherDetails.getCourses());
             return teacherRepo.save(teacher);
         } else {
@@ -55,7 +61,11 @@ public class TeacherService {
     }
 
     public Teacher login(String email, String password) {
-        return teacherRepo.findByTeacherEmailAndTeacherPassword(email, password);
+        Teacher teacher = teacherRepo.findByTeacherEmail(email);
+        if (teacher != null && passwordEncoder.matches(password, teacher.getTeacherPassword())) {
+            return teacher;
+        }
+        return null;
     }
 
     public List<Course> getCoursesForTeacher(int teacherID) {
