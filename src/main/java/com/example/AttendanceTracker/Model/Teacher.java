@@ -15,32 +15,16 @@ public class Teacher {
     @Id
     private int teacherID;
 
-    public List<Course> getTeacherCourses() {
-        return teacherCourses;
-    }
-
-    public void setTeacherCourses(List<Course> teacherCourses) {
-        this.teacherCourses = teacherCourses;
-    }
-
+    // Removed teacherCourses and related methods for TeacherCourse join entity approach
     private String teacherName;
     private String teacherEmail;
     private String teacherPassword;
 
-    @ManyToMany
-    @JoinTable(
-        name = "teacher_course",
-        joinColumns = @JoinColumn(name = "teacherID"),
-        inverseJoinColumns = @JoinColumn(name = "courseID")
-    )
-    private List<Course> teacherCourses;
-
-    public Teacher(int teacherID, String teacherName, String teacherEmail, String teacherPassword, List<Course> teacherCourses) {
+    public Teacher(int teacherID, String teacherName, String teacherEmail, String teacherPassword) {
         this.teacherID = teacherID;
         this.teacherName = teacherName;
         this.teacherEmail = teacherEmail;
         this.teacherPassword = teacherPassword;
-        this.teacherCourses = teacherCourses;
     }
 
     // Constructors
@@ -83,10 +67,10 @@ public class Teacher {
     }
 
     public List<Course> getCourses() {
-        return teacherCourses   ;
+        return null;
     }
 
     public void setCourses(List<Course> teacherCourses) {
-        this.teacherCourses = teacherCourses;
+        // This method is no longer needed as teacherCourses is removed
     }
 }

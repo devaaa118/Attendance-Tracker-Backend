@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/teacher")
@@ -34,9 +35,9 @@ public class TeacherController {
 
     @GetMapping("/{teacherID}/teacherCourses")
     public ResponseEntity<List<Course>> getTeacherCourses(@PathVariable int teacherID) {
-        Teacher teacher = teacherService.getTeacherById(teacherID);
-        if (teacher != null) {
-            return ResponseEntity.ok(teacher.getTeacherCourses());
+        List<Course> courses = teacherService.getCoursesForTeacher(teacherID);
+        if (!courses.isEmpty()) {
+            return ResponseEntity.ok(courses);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -45,6 +46,18 @@ public class TeacherController {
     @PostMapping("/add")
     public Teacher addTeacher(@RequestBody Teacher teacher) {
         return teacherService.addTeacher(teacher);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Teacher> login(@RequestBody Map<String, String> credentials) {
+        String email = credentials.get("email");
+        String password = credentials.get("password");
+        Teacher teacher = teacherService.login(email, password);
+        if (teacher != null) {
+            return ResponseEntity.ok(teacher);
+        } else {
+            return ResponseEntity.status(401).build();
+        }
     }
 
     @PutMapping("/update/{teacherID}")
@@ -66,4 +79,5 @@ public class TeacherController {
             return ResponseEntity.notFound().build();
         }
     }
+    
 } 
