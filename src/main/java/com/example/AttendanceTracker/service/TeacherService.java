@@ -6,7 +6,8 @@ import com.example.AttendanceTracker.Model.Course;
 import com.example.AttendanceTracker.repositry.TeacherRepo;
 import com.example.AttendanceTracker.repositry.TeacherCourseRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,22 @@ public class TeacherService {
     @Autowired
     private TeacherCourseRepo teacherCourseRepo;
 
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    // Simple password hashing method
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(password.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            return password; // fallback to plain text if hashing fails
+        }
+    }
 
     public List<Teacher> getAllTeachers() {
         return teacherRepo.findAll();
@@ -32,7 +48,7 @@ public class TeacherService {
 
     public Teacher addTeacher(Teacher teacher) {
         // Hash the password before saving
-        teacher.setTeacherPassword(passwordEncoder.encode(teacher.getTeacherPassword()));
+        teacher.setTeacherPassword(hashPassword(teacher.getTeacherPassword()));
         return teacherRepo.save(teacher);
     }
 
@@ -43,7 +59,7 @@ public class TeacherService {
             teacher.setTeacherName(teacherDetails.getTeacherName());
             teacher.setTeacherEmail(teacherDetails.getTeacherEmail());
             // Hash the password before saving
-            teacher.setTeacherPassword(passwordEncoder.encode(teacherDetails.getTeacherPassword()));
+            teacher.setTeacherPassword(hashPassword(teacherDetails.getTeacherPassword()));
             teacher.setCourses(teacherDetails.getCourses());
             return teacherRepo.save(teacher);
         } else {
@@ -62,7 +78,7 @@ public class TeacherService {
 
     public Teacher login(String email, String password) {
         Teacher teacher = teacherRepo.findByTeacherEmail(email);
-        if (teacher != null && passwordEncoder.matches(password, teacher.getTeacherPassword())) {
+        if (teacher != null && teacher.getTeacherPassword().equals(hashPassword(password))) {
             return teacher;
         }
         return null;
