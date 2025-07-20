@@ -3,7 +3,7 @@ package com.example.AttendanceTracker.Model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "teacher_course")
+@Table(name = "TeacherCourse")
 public class TeacherCourse {
     @Id
     @Column(name = "teacherCourseID")

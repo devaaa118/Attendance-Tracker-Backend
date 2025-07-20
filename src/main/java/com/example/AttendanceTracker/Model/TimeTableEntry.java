@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "timetable")
+@Table(name = "Timetable")
 public class TimeTableEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
