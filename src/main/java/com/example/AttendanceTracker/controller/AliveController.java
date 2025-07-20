@@ -1,4 +1,5 @@
 @RestController
+    @CrossOrigin(origins = "*")
 public class AliveController {
 
     @GetMapping("/")
