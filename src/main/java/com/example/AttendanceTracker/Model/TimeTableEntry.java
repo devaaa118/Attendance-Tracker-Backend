@@ -14,12 +14,22 @@ import lombok.NoArgsConstructor;
 public class TimeTableEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "timetableID")
     private int timetableID;
 
+    @Column(name = "teacherID")
     private int teacherID;
+
+    @Column(name = "courseID")
     private int courseID;
+
+    @Column(name = "dayOfWeek")
     private String dayOfWeek;
+
+    @Column(name = "startTime")
     private String startTime;
+
+    @Column(name = "endTime")
     private String endTime;
 
     @ManyToOne(fetch = FetchType.EAGER)

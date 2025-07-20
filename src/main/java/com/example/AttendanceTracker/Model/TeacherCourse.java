@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "teacher_course")
 public class TeacherCourse {
     @Id
+    @Column(name = "teacherCourseID")
     private int teacherCourseID;
 
     @ManyToOne
@@ -16,7 +17,10 @@ public class TeacherCourse {
     @JoinColumn(name = "courseID")
     private Course course;
 
+    @Column(name = "teacherName")
     private String teacherName;
+
+    @Column(name = "courseName")
     private String courseName;
     // Constructors
     public TeacherCourse() {}

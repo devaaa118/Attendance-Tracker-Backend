@@ -11,13 +11,17 @@ import jakarta.persistence.JoinColumn;
 @Entity
 
 public class Teacher {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int teacherID;
 
-    // Removed teacherCourses and related methods for TeacherCourse join entity approach
-    private String teacherName;
+    @Column(name = "teacherEmail")
     private String teacherEmail;
+
+    @Column(name = "teacherName")
+    private String teacherName;
+
+    @Column(name = "teacherPassword")
     private String teacherPassword;
 
     public Teacher(int teacherID, String teacherName, String teacherEmail, String teacherPassword) {

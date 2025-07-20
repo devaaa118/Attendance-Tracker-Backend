@@ -40,9 +40,13 @@ public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "courseID")
     private int courseID;
 
+    @Column(name = "courseName")
     private String courseName;
+
+    @Column(name = "courseSemester")
     private String courseSemester;
 
     // constructors, getters, setters
