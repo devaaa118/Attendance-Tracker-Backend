@@ -76,9 +76,18 @@ public class TeacherService {
     }
 
     public Teacher login(String email, String password) {
-        Teacher teacher = teacherRepo.findByTeacherEmail(email);
-        if (teacher != null && teacher.getTeacherPassword().equals(password)) {
-            return teacher;
+        Teacher teacher = teacherRepo.findByTeacherEmail(email.trim());
+        if (teacher != null) {
+            String dbPassword = teacher.getTeacherPassword() != null ? teacher.getTeacherPassword().trim() : "";
+            String inputPassword = password != null ? password.trim() : "";
+            System.out.println("DB password: [" + dbPassword + "], Input password: [" + inputPassword + "]");
+            if (dbPassword.equals(inputPassword)) {
+                return teacher;
+            } else {
+                System.out.println("Password mismatch!");
+            }
+        } else {
+            System.out.println("Teacher not found for email: " + email);
         }
         return null;
     }
