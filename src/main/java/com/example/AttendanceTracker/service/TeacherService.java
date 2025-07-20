@@ -47,8 +47,7 @@ public class TeacherService {
     }
 
     public Teacher addTeacher(Teacher teacher) {
-        // Hash the password before saving
-        teacher.setTeacherPassword(hashPassword(teacher.getTeacherPassword()));
+        // Store password as plain text (as per your SQL insertion method)
         return teacherRepo.save(teacher);
     }
 
@@ -58,8 +57,8 @@ public class TeacherService {
             Teacher teacher = optionalTeacher.get();
             teacher.setTeacherName(teacherDetails.getTeacherName());
             teacher.setTeacherEmail(teacherDetails.getTeacherEmail());
-            // Hash the password before saving
-            teacher.setTeacherPassword(hashPassword(teacherDetails.getTeacherPassword()));
+            // Store password as plain text (as per your SQL insertion method)
+            teacher.setTeacherPassword(teacherDetails.getTeacherPassword());
             teacher.setCourses(teacherDetails.getCourses());
             return teacherRepo.save(teacher);
         } else {
@@ -78,7 +77,7 @@ public class TeacherService {
 
     public Teacher login(String email, String password) {
         Teacher teacher = teacherRepo.findByTeacherEmail(email);
-        if (teacher != null && teacher.getTeacherPassword().equals(hashPassword(password))) {
+        if (teacher != null && teacher.getTeacherPassword().equals(password)) {
             return teacher;
         }
         return null;
