@@ -15,4 +15,9 @@ public class TimeTableService {
     public List<TimeTableEntry> getTimeTableForTeacher(int teacherID) {
         return timeTableRepository.findByTeacherID(teacherID);
     }
-     }
+
+    public boolean addEntry(TimeTableEntry entry) {
+        return timeTableRepository.save(entry) != null;
+    }
+
+}

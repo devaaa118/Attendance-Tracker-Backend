@@ -22,7 +22,7 @@ public class Attendance {
     private int attendanceID;
 
     @Column(name = "studentID")
-    private int studentID;
+    private String studentID;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "attendanceDate")
@@ -36,4 +36,7 @@ public class Attendance {
 
     @Column(name = "studentName")
     private String studentName;
+
+
+
 }

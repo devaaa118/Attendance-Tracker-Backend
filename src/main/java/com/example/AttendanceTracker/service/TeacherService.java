@@ -98,4 +98,41 @@ public class TeacherService {
         List<TeacherCourse> teacherCourses = teacherCourseRepo.findByTeacher(teacher);
         return teacherCourses.stream().map(TeacherCourse::getCourse).toList();
     }
-} 
+
+    @Autowired
+    private TeacherCourseService teacherCourseService;
+
+    @Autowired
+    private CourseService courseService;
+
+    @Autowired
+    private TeacherRepo teacherRepository;
+    public Teacher getTeacherByEmail(String email) {
+        return teacherRepo.findByTeacherEmail(email);
+    }
+
+    public boolean assignCoursesToTeacher(int teacherID, List<Integer> courseIDs) {
+        Teacher teacher = getTeacherById(teacherID);
+        if (teacher == null) return false;
+
+        // Remove previous assignments for this teacher
+        List<TeacherCourse> existing = teacherCourseRepo.findByTeacher(teacher);
+        teacherCourseRepo.deleteAll(existing);
+
+        for (Integer courseId : courseIDs) {
+            Course course = courseService.getCourseById(courseId);
+            if (course == null) continue;
+
+            TeacherCourse tc = new TeacherCourse();
+            // teacherCourseID will be auto-generated if annotated properly
+            tc.setTeacher(teacher);
+            tc.setCourse(course);
+            tc.setTeacherName(teacher.getTeacherName());
+            tc.setCourseName(course.getCourseName());
+
+            teacherCourseService.save(tc);
+        }
+
+        return true;
+    }
+}

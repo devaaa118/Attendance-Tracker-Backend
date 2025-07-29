@@ -16,4 +16,16 @@ public class CourseService {
       return courseRepo.findAll();
 
     }
+
+    public void AddCourse(Course course) {
+        // Save the course using your repository
+        courseRepo.save(course);
+    }
+    @Autowired
+    private CourseRepo courseRepository;
+
+    public Course getCourseById(int courseId) {
+        return courseRepository.findById(courseId).orElse(null);
+    }
+
 }

@@ -50,6 +50,8 @@ public class Course {
     @Column(name = "courseSemester")
     private String courseSemester;
 
+
+
     // constructors, getters, setters
 }
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AttendanceRepo extends JpaRepository<Attendance,Integer>
@@ -16,4 +17,7 @@ public interface AttendanceRepo extends JpaRepository<Attendance,Integer>
     List<Attendance> findByAttendanceDate(LocalDate date);
 
 
+    List<Attendance> findByCourseIDAndAttendanceDate(int courseID, LocalDate date);
+
+    Optional<Attendance> findByStudentIDAndCourseIDAndAttendanceDate(String studentID, int courseID, LocalDate attendanceDate);
 }

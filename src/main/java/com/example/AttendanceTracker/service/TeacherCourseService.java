@@ -39,6 +39,10 @@ public class TeacherCourseService {
         return false;
     }
 
+    public TeacherCourse save(TeacherCourse teacherCourse) {
+        return teacherCourseRepo.save(teacherCourse);
+    }
+
 
 
 }

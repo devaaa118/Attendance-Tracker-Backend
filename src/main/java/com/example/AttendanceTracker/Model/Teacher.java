@@ -24,6 +24,9 @@ public class Teacher {
     @Column(name = "teacherPassword")
     private String teacherPassword;
 
+    @Column(name = "role")
+    private String role; // "admin" or "teacher"
+
     public Teacher(int teacherID, String teacherName, String teacherEmail, String teacherPassword) {
         this.teacherID = teacherID;
         this.teacherName = teacherName;
@@ -68,6 +71,13 @@ public class Teacher {
 
     public void setTeacherPassword(String teacherPassword) {
         this.teacherPassword = teacherPassword;
+    }
+
+    public String getRole() {
+        return role;
+    }
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public List<Course> getCourses() {

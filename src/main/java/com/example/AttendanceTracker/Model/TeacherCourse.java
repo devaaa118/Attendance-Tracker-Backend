@@ -3,9 +3,10 @@ package com.example.AttendanceTracker.Model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "TeacherCourse")
+@Table(name = "teacher_course")
 public class TeacherCourse {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "teacherCourseID")
     private int teacherCourseID;
 
@@ -55,4 +56,4 @@ public class TeacherCourse {
     public void setTeacher(Teacher teacher) { this.teacher = teacher; }
     public Course getCourse() { return course; }
     public void setCourse(Course course) { this.course = course; }
-} 
+}
